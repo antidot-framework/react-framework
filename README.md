@@ -1,0 +1,2 @@
+# Antidot Framework Tactician Adapter
+
