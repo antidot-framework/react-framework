@@ -1,6 +1,18 @@
 # Changelog
 
-## [1.0.0](https://github.com/antidot-framework/react-framework/tree/1.0.0)
+## [1.0.1](https://github.com/antidot-framework/react-framework/tree/1.0.1)
+
+[Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.0.0...1.0.1)
+
+**Fixed bugs:**
+
+- fix config provider name in composer [\#7](https://github.com/antidot-framework/react-framework/pull/7) ([kpicaza](https://github.com/kpicaza))
+
+**Merged pull requests:**
+
+- add version badge [\#6](https://github.com/antidot-framework/react-framework/pull/6) ([kpicaza](https://github.com/kpicaza))
+
+## [1.0.0](https://github.com/antidot-framework/react-framework/tree/1.0.0) (2021-01-16)
 
 [Full Changelog](https://github.com/antidot-framework/react-framework/compare/4a86b63246e71d13168d95ba5212009a0b8481e7...1.0.0)
 
