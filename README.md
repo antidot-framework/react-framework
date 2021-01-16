@@ -1,2 +1,3 @@
-# Antidot Framework Tactician Adapter
+# Antidot React Framework
+
 

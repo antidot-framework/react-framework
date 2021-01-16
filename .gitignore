@@ -1,4 +1,5 @@
-.phpunit.result.cache
+/.phpunit.result.cache
 /composer.lock
 /coverage
+/infection.log
 /vendor
