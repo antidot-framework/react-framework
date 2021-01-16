@@ -1,6 +1,6 @@
 # Antidot React Framework
 
-
+[![link-packagist](https://img.shields.io/packagist/v/antidot-fw/react-framework.svg?style=flat-square)](https://packagist.org/packages/antidot-fw/react-framework)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/antidot-framework/react-framework/badges/quality-score.png?b=0.0.x)](https://scrutinizer-ci.com/g/antidot-framework/react-framework/?branch=0.0.x)
 [![type-coverage](https://shepherd.dev/github/antidot-framework/react-framework/coverage.svg)](https://shepherd.dev/github/antidot-framework/react-framework)
 [![Code Coverage](https://scrutinizer-ci.com/g/antidot-framework/react-framework/badges/coverage.png?b=0.0.x)](https://scrutinizer-ci.com/g/antidot-framework/react-framework/?branch=0.0.x)
