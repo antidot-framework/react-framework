@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ruleset name="Anti.Framework DBAL adapter coding standard">
-    <description>Anti.Framework DBAL adapter coding standard</description>
+<ruleset name="Antidot React Framework coding standard">
+    <description>Antidot React Framework coding standard</description>
 
     <!-- display progress -->
     <arg value="p"/>
