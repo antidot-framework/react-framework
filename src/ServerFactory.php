@@ -14,6 +14,8 @@ use React\Http\Middleware\LimitConcurrentRequestsMiddleware;
 use React\Http\Middleware\RequestBodyBufferMiddleware;
 use React\Http\Middleware\RequestBodyParserMiddleware;
 use React\Http\Middleware\StreamingRequestMiddleware;
+use React\Promise\PromiseInterface;
+use function React\Promise\resolve;
 
 class ServerFactory
 {
@@ -34,7 +36,7 @@ class ServerFactory
             new LimitConcurrentRequestsMiddleware(($config['max_concurrency']) ?? 100),
             new RequestBodyBufferMiddleware($config['buffer_size'] ?? 4 * 1024 * 1024), // 4 MiB
             new RequestBodyParserMiddleware(),
-            static fn (ServerRequestInterface $request): ResponseInterface => $application->handle($request)
+            static fn (ServerRequestInterface $request): PromiseInterface => resolve($application->handle($request))
         );
 
         return $server;
