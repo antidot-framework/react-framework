@@ -1,6 +1,15 @@
 # Changelog
 
-## [1.0.1](https://github.com/antidot-framework/react-framework/tree/1.0.1)
+## [1.0.2](https://github.com/antidot-framework/react-framework/tree/1.0.2)
+
+[Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.0.1...1.0.2)
+
+**Implemented enhancements:**
+
+- Add PSR-11 Factories for react server and its dependencies [\#8](https://github.com/antidot-framework/react-framework/issues/8)
+- create psr factories [\#9](https://github.com/antidot-framework/react-framework/pull/9) ([kpicaza](https://github.com/kpicaza))
+
+## [1.0.1](https://github.com/antidot-framework/react-framework/tree/1.0.1) (2021-01-16)
 
 [Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.0.0...1.0.1)
 
