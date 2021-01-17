@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Antidot\React;
 
 use Antidot\Application\Http\Application;
+use Antidot\Application\Http\Response\ErrorResponseGenerator;
 use Antidot\Application\Http\RouteFactory;
 use Antidot\Application\Http\Router;
 use Antidot\Container\MiddlewareFactory;
@@ -12,7 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Ramsey\Uuid\Uuid;
+use React\Promise\PromiseInterface;
 use RuntimeException;
+use Throwable;
 use function React\Promise\resolve;
 
 class ReactApplication implements Application, RequestHandlerInterface, MiddlewareInterface
@@ -21,17 +25,20 @@ class ReactApplication implements Application, RequestHandlerInterface, Middlewa
     private Router $router;
     private MiddlewareFactory $middlewareFactory;
     private RouteFactory $routeFactory;
+    private ErrorResponseGenerator $errorResponseGenerator;
 
     public function __construct(
         MiddlewarePipeline $pipeline,
         Router $router,
         MiddlewareFactory $middlewareFactory,
-        RouteFactory $routeFactory
+        RouteFactory $routeFactory,
+        ErrorResponseGenerator $errorResponseGenerator
     ) {
         $this->routeFactory = $routeFactory;
         $this->middlewareFactory = $middlewareFactory;
         $this->router = $router;
         $this->pipeline = $pipeline;
+        $this->errorResponseGenerator = $errorResponseGenerator;
     }
 
     public function pipe(string $middlewareName): void
@@ -80,7 +87,23 @@ class ReactApplication implements Application, RequestHandlerInterface, Middlewa
     {
         return new PromiseResponse(resolve($request)
             ->then(
-                fn(ServerRequestInterface $request): ResponseInterface  => $this->pipeline->process($request, $handler)
+                function (ServerRequestInterface $request) use ($handler): PromiseInterface {
+                    $response = new PromiseResponse(
+                        resolve($request)
+                            ->then(static function (ServerRequestInterface $request): ServerRequestInterface {
+                                return $request->withAttribute('request_id', Uuid::uuid4()->toString());
+                            })
+                            ->then(function (ServerRequestInterface $request) use ($handler): ResponseInterface {
+                                try {
+                                    return $this->pipeline->process($request, $handler);
+                                } catch (Throwable $exception) {
+                                    return $this->errorResponseGenerator->__invoke($exception);
+                                }
+                            })
+                    );
+
+                    return resolve($response);
+                }
             ));
     }
 
@@ -88,7 +111,23 @@ class ReactApplication implements Application, RequestHandlerInterface, Middlewa
     {
         return new PromiseResponse(resolve($request)
             ->then(
-                fn (ServerRequestInterface $request): ResponseInterface => $this->pipeline->handle($request)
+                function (ServerRequestInterface $request): PromiseInterface {
+                    $response = new PromiseResponse(
+                        resolve($request)
+                            ->then(static function (ServerRequestInterface $request): ServerRequestInterface {
+                                return $request->withAttribute('request_id', Uuid::uuid4()->toString());
+                            })
+                            ->then(function (ServerRequestInterface $request): ResponseInterface {
+                                try {
+                                    return $this->pipeline->handle($request);
+                                } catch (Throwable $exception) {
+                                    return $this->errorResponseGenerator->__invoke($exception);
+                                }
+                            })
+                    );
+
+                    return resolve($response);
+                }
             ));
     }
 
