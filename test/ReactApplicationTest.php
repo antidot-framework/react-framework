@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace AntidotTest\React;
 
+use Antidot\Application\Http\Response\ErrorResponseGenerator;
 use Antidot\Application\Http\RouteFactory;
 use Antidot\Application\Http\Router;
 use Antidot\Container\MiddlewareFactory;
 use Antidot\React\MiddlewarePipeline;
 use Antidot\React\ReactApplication;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -22,6 +24,7 @@ class ReactApplicationTest extends TestCase
     private Router $router;
     private MiddlewareFactory $middlewareFactory;
     private RouteFactory $routeFactory;
+    private ErrorResponseGenerator $errorResponseGenerator;
 
     protected function setUp(): void
     {
@@ -29,6 +32,7 @@ class ReactApplicationTest extends TestCase
         $this->router = $this->createMock(Router::class);
         $this->middlewareFactory = $this->createMock(MiddlewareFactory::class);
         $this->routeFactory = $this->createMock(RouteFactory::class);
+        $this->errorResponseGenerator = $this->createMock(ErrorResponseGenerator::class);
     }
 
     /** @dataProvider getRoutes */
@@ -44,7 +48,8 @@ class ReactApplicationTest extends TestCase
             $this->pipeline,
             $this->router,
             $this->middlewareFactory,
-            $this->routeFactory
+            $this->routeFactory,
+            $this->errorResponseGenerator
         );
 
         $application->{$method}(...$params);
@@ -65,7 +70,8 @@ class ReactApplicationTest extends TestCase
             $this->pipeline,
             $this->router,
             $this->middlewareFactory,
-            $this->routeFactory
+            $this->routeFactory,
+            $this->errorResponseGenerator
         );
 
         $application->pipe('SomeMiddleware');
@@ -75,6 +81,9 @@ class ReactApplicationTest extends TestCase
     {
         $handler = $this->createMock(RequestHandlerInterface::class);
         $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('withAttribute')
+            ->willReturn($request);
         $this->pipeline->expects($this->once())
             ->method('process');
 
@@ -82,7 +91,30 @@ class ReactApplicationTest extends TestCase
             $this->pipeline,
             $this->router,
             $this->middlewareFactory,
-            $this->routeFactory
+            $this->routeFactory,
+            $this->errorResponseGenerator
+        );
+
+        await($application->process($request, $handler), Factory::create());
+    }
+
+    public function testItShouldProcessFailingRequestThenReturnAnErrorPromiseResponse(): void
+    {
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('withAttribute')
+            ->willReturn($request);
+        $this->pipeline->expects($this->once())
+            ->method('process')
+            ->willThrowException(new Exception('fail'));
+
+        $application = new ReactApplication(
+            $this->pipeline,
+            $this->router,
+            $this->middlewareFactory,
+            $this->routeFactory,
+            $this->errorResponseGenerator
         );
 
         await($application->process($request, $handler), Factory::create());
@@ -91,6 +123,9 @@ class ReactApplicationTest extends TestCase
     public function testItShouldHandleRequestThenReturnPromiseResponse(): void
     {
         $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('withAttribute')
+            ->willReturn($request);
         $this->pipeline->expects($this->once())
             ->method('handle');
 
@@ -98,7 +133,29 @@ class ReactApplicationTest extends TestCase
             $this->pipeline,
             $this->router,
             $this->middlewareFactory,
-            $this->routeFactory
+            $this->routeFactory,
+            $this->errorResponseGenerator
+        );
+
+        await($application->handle($request), Factory::create());
+    }
+
+    public function testItShouldHandleFailingRequestThenReturnAnErrorPromiseResponse(): void
+    {
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects($this->once())
+            ->method('withAttribute')
+            ->willReturn($request);
+        $this->pipeline->expects($this->once())
+            ->method('handle')
+            ->willThrowException(new Exception('fail'));
+
+        $application = new ReactApplication(
+            $this->pipeline,
+            $this->router,
+            $this->middlewareFactory,
+            $this->routeFactory,
+            $this->errorResponseGenerator
         );
 
         await($application->handle($request), Factory::create());
@@ -113,7 +170,8 @@ class ReactApplicationTest extends TestCase
             $this->pipeline,
             $this->router,
             $this->middlewareFactory,
-            $this->routeFactory
+            $this->routeFactory,
+            $this->errorResponseGenerator
         );
 
         $application->run();
