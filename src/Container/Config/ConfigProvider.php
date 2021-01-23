@@ -5,8 +5,12 @@ namespace Antidot\React\Container\Config;
 use Antidot\Application\Http\Application;
 use Antidot\React\LoopFactory;
 use Antidot\React\ReactApplicationFactory;
+use Antidot\React\RunServerCommandFactory;
 use Antidot\React\ServerFactory;
 use Antidot\React\SocketFactory;
+use Antidot\React\WatchServerCommandFactory;
+use Drift\Server\Console\RunServerCommand;
+use Drift\Server\Console\WatchServerCommand;
 use React\EventLoop\LoopInterface;
 use React\Http\Server;
 use React\Socket\Server as Socket;
@@ -29,12 +33,23 @@ class ConfigProvider
                     Socket::class => SocketFactory::class,
                 ],
             ],
+            'console' => [
+                'commands' => [
+                    'server:run' => RunServerCommand::class,
+                    'server:watch' => WatchServerCommand::class
+                ],
+                'factories' => [
+                    RunServerCommand::class => RunServerCommandFactory::class,
+                    WatchServerCommand::class => WatchServerCommandFactory::class,
+                ],
+            ],
             'server' => [
+                'host' => '0.0.0.0',
+                'port' => 5555,
+                'buffer_size' => 4096,
+                'max_concurrency' => 100,
                 'workers' => 1,
-                'host' => self::DEFAULT_HOST,
-                'port' => self::DEFAULT_PORT,
-                'max_concurrency' => self::DEFAULT_CONCURRENCY,
-                'buffer_size' => self::DEFAULT_BUFFER_SIZE,
+                'static_folder' => 'public'
             ]
         ];
     }
