@@ -29,7 +29,13 @@ class ConfigProviderTest extends TestCase
                         Socket::class => SocketFactory::class,
                     ]
                 ],
-                'server' => []
+                'server' => [
+                    'workers' => 1,
+                    'host' => '0.0.0.0',
+                    'port' => 8080,
+                    'max_concurrency' => 100,
+                    'buffer_size' => 4194304,
+                ]
             ],
             $configProvider(),
         );
