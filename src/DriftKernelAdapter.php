@@ -71,7 +71,7 @@ final class DriftKernelAdapter implements KernelAdapter
 
     public static function getStaticFolder(): ?string
     {
-        return '/public';
+        return 'public';
     }
 
     public function shutDown(): PromiseInterface
