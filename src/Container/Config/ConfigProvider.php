@@ -13,6 +13,11 @@ use React\Socket\Server as Socket;
 
 class ConfigProvider
 {
+    private const DEFAULT_HOST = '0.0.0.0';
+    private const DEFAULT_PORT = 8080;
+    private const DEFAULT_CONCURRENCY = 100;
+    private const DEFAULT_BUFFER_SIZE = 4 * 1024 * 1024;
+
     public function __invoke(): array
     {
         return [
@@ -25,7 +30,11 @@ class ConfigProvider
                 ],
             ],
             'server' => [
-                'workers' => 1
+                'workers' => 1,
+                'host' => self::DEFAULT_HOST,
+                'port' => self::DEFAULT_PORT,
+                'max_concurrency' => self::DEFAULT_CONCURRENCY,
+                'buffer_size' => self::DEFAULT_BUFFER_SIZE,
             ]
         ];
     }
