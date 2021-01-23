@@ -24,7 +24,9 @@ class ConfigProvider
                     Socket::class => SocketFactory::class,
                 ],
             ],
-            'server' => []
+            'server' => [
+                'workers' => 1
+            ]
         ];
     }
 }

@@ -19,10 +19,10 @@ class SocketFactory
         /** @var array<string, string|null> $config */
         $config = $globalConfig['server'];
 
-        return new Socket(sprintf(
-            '%s:%s',
-            $config['host'] ?? '0.0.0.0',
-            $config['port'] ?? '8080'
-        ), $loop);
+        return new Socket(
+            sprintf('%s:%s', $config['host'] ?? '0.0.0.0', $config['port'] ?? '8080'),
+            $loop,
+            ['tcp' => ['so_reuseport' => 2 <= $config['workers']]]
+        );
     }
 }

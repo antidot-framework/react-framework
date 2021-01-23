@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Antidot\React;
 
-use Psr\Http\Message\ResponseInterface;
 use React\Promise\PromiseInterface;
 use RingCentral\Psr7\Response;
-use Throwable;
 
 class PromiseResponse extends Response implements PromiseInterface
 {

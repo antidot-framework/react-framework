@@ -6,7 +6,6 @@ namespace Antidot\React;
 
 use Antidot\Application\Http\Application;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\EventLoop\LoopInterface;
 use React\Http\Server;
