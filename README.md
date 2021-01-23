@@ -10,7 +10,9 @@
 
 * PHP ^7.4|^8.0
 * Antidot Framework
+* DriftPHP Server  
 * React Http
+* React Promises
 * Ramsey Uuid
 
 ## Description
@@ -74,44 +76,90 @@ $aggregator = new ConfigAggregator([
 return $aggregator->getMergedConfig();
 ```
 
-The create your React Http server
+Default Config:
 
 ```php
-#!/usr/bin/env php
 <?php
 
-declare(strict_types=1);
-
-use Antidot\Application\Http\Application;
-use Antidot\React\Child;
-use Psr\Log\LoggerInterface;
-use React\EventLoop\LoopInterface;
-use React\Http\Server;
-use React\Socket\Server as Socket;
-
-require 'vendor/autoload.php';
-
-call_user_func(static function () {
-    $container = require 'config/container.php';
-    $application = $container->get(Application::class);
-    (require 'router/middleware.php')($application, $container);
-    (require 'router/routes.php')($application, $container);
-
-    $loop = $container->get(LoopInterface::class);
-    Child::fork(
-        shell_exec('nproc') ? (int)shell_exec('nproc') : 16,
-        static function () use ($container) {
-            $server = $container->get(Server::class);
-            $server->on('error', static function ($err) use ($container) {
-                $logger = $container->get(LoggerInterface::class);
-                $logger->critical($err);
-            });
-
-            $socket = $container->get(Socket::class);
-            $server->listen($socket);
-        });
-
-    $loop->run();
-});
+$config = [
+    'server' => [
+        'host' => '0.0.0.0',
+        'port' => 5555,
+        'buffer_size' => 4096,
+        'max_concurrency' => 100,
+        'workers' => 1,
+        'static_folder' => 'public'
+    ]
+]
 
 ```
+
+### Usage
+
+Two new commands will be added to the Antidot Framework CLI tool, to allow running the application on top of [Drift server](https://driftphp.io/#/?id=the-server)
+
+* `server:run`: Run Drift HTTP Server
+* `server:watch`: Watch Drift HTTP Server for development purposes
+
+```bash
+$ bin/console
+...
+ server
+  server:run               Run Drift HTTP Server
+  server:watch             Watch Drift HTTP Server for development purposes
+```
+
+```bash
+$ bin/console server:run -h
+Description:
+  Run Drift HTTP Server
+
+Usage:
+  server:run [options] [--] [<path>]
+
+Arguments:
+  path                                             The server will start listening to this address [default: "0.0.0.0:5555"]
+
+Options:
+      --static-folder[=STATIC-FOLDER]              Static folder path [default: "public"]
+      --no-static-folder                           Disable static folder
+      --debug                                      Enable debug
+      --no-header                                  Disable the header
+      --no-cookies                                 Disable cookies
+      --no-file-uploads                            Disable file uploads
+      --concurrent-requests[=CONCURRENT-REQUESTS]  Limit of concurrent requests [default: 100]
+      --request-body-buffer[=REQUEST-BODY-BUFFER]  Limit of the buffer used for the Request body. In KiB. [default: 4096]
+      --adapter[=ADAPTER]                          Server Adapter [default: "Antidot\React\DriftKernelAdapter"]
+      --allowed-loop-stops[=ALLOWED-LOOP-STOPS]    Number of allowed loop stops [default: 0]
+      --workers[=WORKERS]                          Number of workers. Use -1 to get as many workers as physical thread available for your system. Maximum of 128 workers. Option disabled for watch command. [default: 16]
+  -q, --quiet                                      Do not output any message
+
+```
+
+```bash
+$ bin/console server:watch -h
+Description:
+  Watch Drift HTTP Server for development purposes
+
+Usage:
+  server:watch [options] [--] [<path>]
+
+Arguments:
+  path                                             The server will start listening to this address [default: "0.0.0.0:5555"]
+
+Options:
+      --static-folder[=STATIC-FOLDER]              Static folder path [default: "public"]
+      --no-static-folder                           Disable static folder
+      --debug                                      Enable debug
+      --no-header                                  Disable the header
+      --no-cookies                                 Disable cookies
+      --no-file-uploads                            Disable file uploads
+      --concurrent-requests[=CONCURRENT-REQUESTS]  Limit of concurrent requests [default: 512]
+      --request-body-buffer[=REQUEST-BODY-BUFFER]  Limit of the buffer used for the Request body. In KiB. [default: 2048]
+      --adapter[=ADAPTER]                          Server Adapter [default: "drift"]
+      --allowed-loop-stops[=ALLOWED-LOOP-STOPS]    Number of allowed loop stops [default: 0]
+      --workers[=WORKERS]                          Number of workers. Use -1 to get as many workers as physical thread available for your system. Maximum of 128 workers. Option disabled for watch command. [default: 1]
+  -q, --quiet                                      Do not output any message
+
+```
+
