@@ -107,6 +107,10 @@ class ReactApplication implements Application, RequestHandlerInterface, Middlewa
             ));
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @return PromiseResponse
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return new PromiseResponse(resolve($request)
