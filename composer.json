@@ -55,7 +55,8 @@
         "test": "phpunit --colors=always"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "discard-changes": true
     },
     "extra": {
         "laminas": {
