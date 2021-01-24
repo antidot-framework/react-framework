@@ -6,7 +6,7 @@ on:
   pull_request:
   push:
     branches:
-      - "0.0.x"
+      - "2.x.x"
 
 jobs:
   static-analysis-psalm:
