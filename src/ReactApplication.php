@@ -76,10 +76,10 @@ class ReactApplication implements Application, RequestHandlerInterface, Middlewa
         $this->route($uri, $middleware, ['OPTIONS'], $name);
     }
 
-    public function route(string $uri, array $middleware, array $method, string $name): void
+    public function route(string $uri, array $middleware, array $methods, string $name): void
     {
         $this->router->append(
-            $this->routeFactory->create([$method], $middleware, $uri, $name)
+            $this->routeFactory->create($methods, $middleware, $uri, $name)
         );
     }
 
