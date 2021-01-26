@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Antidot\React;
 
 use Antidot\Application\Http\Handler\NextHandler;
+use Antidot\Application\Http\Middleware\MiddlewareQueue;
 use Antidot\Application\Http\Middleware\Pipeline;
+use Antidot\Application\Http\Middleware\SyncMiddlewareQueue;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -18,14 +20,14 @@ use function React\Promise\resolve;
 
 class MiddlewarePipeline implements Pipeline
 {
-    /** @var array<SplQueue> */
+    /** @var array<MiddlewareQueue> */
     public array $concurrentPipelines;
     /** @var array<MiddlewareInterface> */
     private array $middlewareCollection;
 
     /**
      * @param array<MiddlewareInterface> $middlewareCollection
-     * @param array<SplQueue> $concurrentPipelines
+     * @param array<MiddlewareQueue> $concurrentPipelines
      */
     public function __construct(
         array $middlewareCollection = [],
@@ -82,7 +84,7 @@ class MiddlewarePipeline implements Pipeline
                 /** @var string $requestId */
                 $requestId = $request->getAttribute('request_id');
                 try {
-                    /** @var SplQueue<MiddlewareInterface> $queue */
+                    /** @var MiddlewareQueue $queue */
                     $queue = $this->concurrentPipelines[$requestId];
                     $next = new NextHandler($queue, $handler);
 
@@ -98,7 +100,7 @@ class MiddlewarePipeline implements Pipeline
     private function setCurrentPipeline(string $requestId): void
     {
         if (empty($this->concurrentPipelines[$requestId])) {
-            $queue = new SplQueue();
+            $queue = new SyncMiddlewareQueue();
             foreach ($this->middlewareCollection as $middlewareName) {
                 $queue->enqueue($middlewareName);
             }
