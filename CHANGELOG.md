@@ -1,6 +1,23 @@
 # Changelog
 
-## [1.0.4](https://github.com/antidot-framework/react-framework/tree/1.0.4)
+## [1.1.0](https://github.com/antidot-framework/react-framework/tree/1.1.0)
+
+[Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.0.4...1.1.0)
+
+**Implemented enhancements:**
+
+- Resolving issue\#30 for antidot-framework [\#16](https://github.com/antidot-framework/react-framework/pull/16) ([peter279k](https://github.com/peter279k))
+
+**Fixed bugs:**
+
+- use new middleware queue [\#18](https://github.com/antidot-framework/react-framework/pull/18) ([kpicaza](https://github.com/kpicaza))
+
+**Merged pull requests:**
+
+- update readme [\#19](https://github.com/antidot-framework/react-framework/pull/19) ([kpicaza](https://github.com/kpicaza))
+- bump antidot version to 0.2.0 [\#17](https://github.com/antidot-framework/react-framework/pull/17) ([kpicaza](https://github.com/kpicaza))
+
+## [1.0.4](https://github.com/antidot-framework/react-framework/tree/1.0.4) (2021-01-24)
 
 [Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.0.3...1.0.4)
 
