@@ -6,18 +6,18 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/antidot-framework/react-framework/badges/coverage.png?b=0.0.x)](https://scrutinizer-ci.com/g/antidot-framework/react-framework/?branch=0.0.x)
 [![Build Status](https://scrutinizer-ci.com/g/antidot-framework/react-framework/badges/build.png?b=0.0.x)](https://scrutinizer-ci.com/g/antidot-framework/react-framework/build-status/0.0.x)
 
-## Requirements:
+## Requirements
 
 * PHP ^7.4|^8.0
-* Antidot Framework
-* DriftPHP Server  
-* React Http
-* React Promises
-* Ramsey Uuid
+* [Antidot Framework](https://antidotfw.io)
+* [DriftPHP Server](https://github.com/driftphp/server)
+* [React Http](https://github.com/reactphp/http)
+* [React Promises](https://github.com/reactphp/promise)
+* [Ramsey Uuid](https://github.com/ramsey/uuid)
 
 ## Description
 
-This package allows running both common synchronous and modern asynchronous PHP following PSR-15 middleware standard approach.
+This package allows running asynchronous PHP following PSR-15 middleware standard approach.
 
 ## Install
 
