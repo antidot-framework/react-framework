@@ -1,6 +1,19 @@
 # Changelog
 
-## [1.1.0](https://github.com/antidot-framework/react-framework/tree/1.1.0)
+## [1.1.1](https://github.com/antidot-framework/react-framework/tree/1.1.1)
+
+[Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.1.0...1.1.1)
+
+**Implemented enhancements:**
+
+- Add drift kernel adapter [\#12](https://github.com/antidot-framework/react-framework/pull/12) ([kpicaza](https://github.com/kpicaza))
+
+**Merged pull requests:**
+
+- add links in docs [\#22](https://github.com/antidot-framework/react-framework/pull/22) ([kpicaza](https://github.com/kpicaza))
+- create docs page [\#21](https://github.com/antidot-framework/react-framework/pull/21) ([kpicaza](https://github.com/kpicaza))
+
+## [1.1.0](https://github.com/antidot-framework/react-framework/tree/1.1.0) (2021-01-26)
 
 [Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.0.4...1.1.0)
 
@@ -50,10 +63,6 @@
 
 [Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.0.0...1.0.1)
 
-**Fixed bugs:**
-
-- fix config provider name in composer [\#7](https://github.com/antidot-framework/react-framework/pull/7) ([kpicaza](https://github.com/kpicaza))
-
 **Merged pull requests:**
 
 - add version badge [\#6](https://github.com/antidot-framework/react-framework/pull/6) ([kpicaza](https://github.com/kpicaza))
@@ -65,6 +74,10 @@
 **Implemented enhancements:**
 
 - add missing pieces to run antidot with react php [\#4](https://github.com/antidot-framework/react-framework/pull/4) ([kpicaza](https://github.com/kpicaza))
+
+**Fixed bugs:**
+
+- fix config provider name in composer [\#7](https://github.com/antidot-framework/react-framework/pull/7) ([kpicaza](https://github.com/kpicaza))
 
 **Merged pull requests:**
 
