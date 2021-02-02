@@ -33,16 +33,7 @@ class ConfigProvider
                     Socket::class => SocketFactory::class,
                 ],
             ],
-            'console' => [
-                'commands' => [
-                    'server:run' => RunServerCommand::class,
-                    'server:watch' => WatchServerCommand::class
-                ],
-                'factories' => [
-                    RunServerCommand::class => RunServerCommandFactory::class,
-                    WatchServerCommand::class => WatchServerCommandFactory::class,
-                ],
-            ],
+            'console' => $this->getConsoleConfig(),
             'server' => [
                 'host' => '0.0.0.0',
                 'port' => 5555,
@@ -52,5 +43,30 @@ class ConfigProvider
                 'static_folder' => 'public'
             ]
         ];
+    }
+
+    private function getConsoleConfig(): array
+    {
+        $hasWatcher = class_exists(WatchServerCommand::class);
+
+        return $hasWatcher
+            ? [
+                'commands' => [
+                    'server:run' => RunServerCommand::class,
+                    'server:watch' => WatchServerCommand::class
+                ],
+                'factories' => [
+                    RunServerCommand::class => RunServerCommandFactory::class,
+                    WatchServerCommand::class => WatchServerCommandFactory::class,
+                ]
+            ]
+            : [
+                'commands' => [
+                    'server:run' => RunServerCommand::class,
+                ],
+                'factories' => [
+                    RunServerCommand::class => RunServerCommandFactory::class,
+                ]
+            ];
     }
 }

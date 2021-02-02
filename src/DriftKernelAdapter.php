@@ -18,18 +18,27 @@ use function React\Promise\resolve;
 
 final class DriftKernelAdapter implements KernelAdapter
 {
-    private FilesystemInterface $filesystem;
     private ServerContext $serverContext;
     private MimeTypeChecker $mimeTypeChecker;
     private string $rootPath;
     private ContainerInterface $container;
     private ReactApplication $application;
+    /** @var object|FilesystemInterface|null */
+    private ?object $filesystem = null;
 
+    /**
+     * DriftKernelAdapter constructor.
+     * @param ServerContext $serverContext
+     * @param MimeTypeChecker $mimeTypeChecker
+     * @param string $rootPath
+     * @psalm-suppress UndefinedClass
+     * @param FilesystemInterface|null $filesystem
+     */
     public function __construct(
         ServerContext $serverContext,
-        FilesystemInterface $filesystem,
         MimeTypeChecker $mimeTypeChecker,
-        string $rootPath
+        string $rootPath,
+        ?FilesystemInterface $filesystem
     ) {
         $container = require $rootPath . '/config/container.php';
         assert($container instanceof ContainerInterface);
@@ -50,12 +59,15 @@ final class DriftKernelAdapter implements KernelAdapter
         LoopInterface $loop,
         string $rootPath,
         ServerContext $serverContext,
-        FilesystemInterface $filesystem,
         OutputPrinter $outputPrinter,
-        MimeTypeChecker $mimeTypeChecker
+        MimeTypeChecker $mimeTypeChecker,
+        ?FilesystemInterface $filesystem = null
     ): PromiseInterface {
+        if ($filesystem && !class_exists(FilesystemInterface::class)) {
+            throw new \RuntimeException('Install react/filesystem package.');
+        }
 
-        return resolve(new self($serverContext, $filesystem, $mimeTypeChecker, $rootPath))
+        return resolve(new self($serverContext, $mimeTypeChecker, $rootPath, $filesystem))
             ->then(fn (KernelAdapter $adapter): KernelAdapter => $adapter);
     }
 

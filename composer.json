@@ -17,7 +17,7 @@
         "php": "^7.4|^8.0",
         "antidot-fw/framework": "^0.2.0",
         "beberlei/assert": "^3.3",
-        "drift/server": "^0.1.18",
+        "drift/server": "^0.1.20",
         "psr/container": "^1.0.0",
         "ramsey/uuid": "^4.1",
         "react/http": "^1.2"
@@ -62,5 +62,8 @@
         "laminas": {
             "config-provider": "Antidot\\React\\Container\\Config\\ConfigProvider"
         }
+    },
+    "suggest": {
+        "react/filesystem": "^0.1.2"
     }
 }
