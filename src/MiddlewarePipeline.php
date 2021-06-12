@@ -13,7 +13,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Ramsey\Uuid\Uuid;
-use SplQueue;
 use Throwable;
 use function React\Promise\reject;
 use function React\Promise\resolve;
@@ -53,7 +52,6 @@ class MiddlewarePipeline implements Pipeline
                 /** @var string $requestId */
                 $requestId = $request->getAttribute('request_id');
                 try {
-                    /** @var MiddlewareInterface $middleware */
                     $middleware = $this->concurrentPipelines[$requestId]->dequeue();
 
                     $response = $middleware->process($request, $this);
@@ -84,7 +82,6 @@ class MiddlewarePipeline implements Pipeline
                 /** @var string $requestId */
                 $requestId = $request->getAttribute('request_id');
                 try {
-                    /** @var MiddlewareQueue $queue */
                     $queue = $this->concurrentPipelines[$requestId];
                     $next = new NextHandler($queue, $handler);
 

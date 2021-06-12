@@ -100,6 +100,8 @@ It allows executing promises inside PSR-15 and PSR-7 Middlewares and request han
 
 ### PSR-15 Middleware
 
+**Promise Based**
+
 ```php
 <?php
 declare(strict_types = 1);
@@ -111,6 +113,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use function React\Promise\resolve;
 
 class SomeMiddleware implements MiddlewareInterface
 {
@@ -118,13 +121,46 @@ class SomeMiddleware implements MiddlewareInterface
     {
         return new PromiseResponse(
             resolve($request)
-                ->then(static fn(ServerrequestInsterface $request) => $handler->handle($request))
+                ->then(static fn(ServerRequestInterface $request) => $handler->handle($request))
+        );
+    }
+}
+```
+
+**Coroutine based**
+
+```php
+<?php
+declare(strict_types = 1);
+
+namespace App;
+
+use Antidot\React\PromiseResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use function React\Promise\resolve;
+
+class SomeMiddleware implements MiddlewareInterface
+{
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        return PromiseResponse::fromGeneratorCallback(
+            static function(ServerRequestInterface $request) {
+                $value = yield resolve('Some promised value.');
+                $request = $request->withAttribute('some_attribute', $value);
+            
+                return $handler->handle($request));
+            }    
         );
     }
 }
 ```
 
 ### PSR-7 Request Handler
+
+**Promise Based**
 
 ```php
 <?php
@@ -136,16 +172,46 @@ use Antidot\React\PromiseResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use function React\Promise\resolve;
 
-class SomeMiddleware implements RequestHandlerInterface
+class SomeRequestHandler implements RequestHandlerInterface
 {
-    public function process(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return resolve($request)->then(
-            function(ServerrequestInterface $request): ResponseInterface {
+        return new PromiseResponse(resolve($request)->then(
+            function(ServerRequestInterface $request): ResponseInterface {
                 return new Response('Hello World!!!');
             }
-        );;
+        ));
+    }
+}
+```
+
+**Coroutine based**
+
+```php
+<?php
+declare(strict_types = 1);
+
+namespace App;
+
+use Antidot\React\PromiseResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use function React\Promise\resolve;
+
+class SomeRequestHandler implements RequestHandlerInterface
+{
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        return PromiseResponse::fromGeneratorCallback(
+            function(ServerRequestInterface $request): ResponseInterface {
+                $message = yield resolve('Hello World!!!');
+            
+                return new Response($message);
+            }
+        ));
     }
 }
 ```

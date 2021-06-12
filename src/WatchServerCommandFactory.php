@@ -31,11 +31,11 @@ class WatchServerCommandFactory
         $definition->setArguments([$path]);
 
         $staticFolder = $definition->getOption('static-folder');
-        $staticFolder->setDefault($config['static_folder']);
+        $staticFolder->setDefault((string)$config['static_folder']);
         $concurrentRequests = $definition->getOption('concurrent-requests');
-        $concurrentRequests->setDefault($config['max_concurrency']);
+        $concurrentRequests->setDefault((string)$config['max_concurrency']);
         $bufferSize = $definition->getOption('request-body-buffer');
-        $bufferSize->setDefault($config['buffer_size']);
+        $bufferSize->setDefault((string)$config['buffer_size']);
 
         return $command;
     }

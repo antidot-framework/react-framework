@@ -68,17 +68,18 @@ final class DriftKernelAdapter implements KernelAdapter
         }
 
         return resolve(new self($serverContext, $mimeTypeChecker, $rootPath, $filesystem))
-            ->then(fn (KernelAdapter $adapter): KernelAdapter => $adapter);
+            ->then(static fn(KernelAdapter $adapter): KernelAdapter => $adapter);
     }
 
     /**
-     * @psalm-suppress LessSpecificImplementedReturnType
      * @param ServerRequestInterface $request
-     * @return PromiseResponse
+     * @psalm-suppress LessSpecificImplementedReturnType
      */
-    public function handle(ServerRequestInterface $request): PromiseResponse
+    public function handle(ServerRequestInterface $request): PromiseInterface
     {
-        return $this->application->handle($request);
+        return $this->application
+            ->handle($request)
+            ->then([ResolveGenerator::class, 'toResponse']);
     }
 
     public static function getStaticFolder(): ?string

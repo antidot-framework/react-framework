@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0",
         "antidot-fw/framework": "^0.2.0",
         "beberlei/assert": "^3.3",
         "drift/server": "^0.1.20",
