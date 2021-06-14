@@ -14,10 +14,6 @@ use React\Http\Middleware\LimitConcurrentRequestsMiddleware;
 use React\Http\Middleware\RequestBodyBufferMiddleware;
 use React\Http\Middleware\RequestBodyParserMiddleware;
 use React\Http\Middleware\StreamingRequestMiddleware;
-use React\Promise\PromiseInterface;
-use function PHPUnit\Framework\assertArrayHasKey;
-use function PHPUnit\Framework\assertIsInt;
-use function React\Promise\resolve;
 
 class ServerFactory
 {
@@ -42,7 +38,11 @@ class ServerFactory
             new LimitConcurrentRequestsMiddleware($config['max_concurrency']),
             new RequestBodyBufferMiddleware($config['buffer_size']),
             new RequestBodyParserMiddleware(),
-            static fn (ServerRequestInterface $request): PromiseInterface => resolve($application->handle($request))
+            static function (ServerRequestInterface $request) use ($application) {
+                return $application
+                    ->handle($request)
+                    ->then([ResolveGenerator::class, 'toResponse']);
+            }
         );
 
         return $server;
