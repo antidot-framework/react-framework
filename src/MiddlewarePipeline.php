@@ -53,7 +53,6 @@ class MiddlewarePipeline implements Pipeline
                 /** @var string $requestId */
                 $requestId = $request->getAttribute('request_id');
                 try {
-                    /** @var MiddlewareInterface $middleware */
                     $middleware = $this->concurrentPipelines[$requestId]->dequeue();
 
                     $response = $middleware->process($request, $this);
@@ -84,7 +83,6 @@ class MiddlewarePipeline implements Pipeline
                 /** @var string $requestId */
                 $requestId = $request->getAttribute('request_id');
                 try {
-                    /** @var MiddlewareQueue $queue */
                     $queue = $this->concurrentPipelines[$requestId];
                     $next = new NextHandler($queue, $handler);
 
