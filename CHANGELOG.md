@@ -1,6 +1,18 @@
 # Changelog
 
-## [1.1.1](https://github.com/antidot-framework/react-framework/tree/1.1.1)
+## [1.2.0](https://github.com/antidot-framework/react-framework/tree/1.2.0) (2021-11-28)
+
+[Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.1.1...1.2.0)
+
+**Implemented enhancements:**
+
+- Add PHP 8.0 on GitHub action and Fix Psalm issue [\#25](https://github.com/antidot-framework/react-framework/pull/25) ([peter279k](https://github.com/peter279k))
+
+**Merged pull requests:**
+
+- fix badges versions [\#23](https://github.com/antidot-framework/react-framework/pull/23) ([kpicaza](https://github.com/kpicaza))
+
+## [1.1.1](https://github.com/antidot-framework/react-framework/tree/1.1.1) (2021-02-02)
 
 [Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.1.0...1.1.1)
 
@@ -34,10 +46,6 @@
 
 [Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.0.3...1.0.4)
 
-**Implemented enhancements:**
-
-- allow fork server in threads [\#13](https://github.com/antidot-framework/react-framework/pull/13) ([kpicaza](https://github.com/kpicaza))
-
 **Merged pull requests:**
 
 - add github actions [\#15](https://github.com/antidot-framework/react-framework/pull/15) ([kpicaza](https://github.com/kpicaza))
@@ -63,6 +71,14 @@
 
 [Full Changelog](https://github.com/antidot-framework/react-framework/compare/1.0.0...1.0.1)
 
+**Implemented enhancements:**
+
+- allow fork server in threads [\#13](https://github.com/antidot-framework/react-framework/pull/13) ([kpicaza](https://github.com/kpicaza))
+
+**Fixed bugs:**
+
+- fix config provider name in composer [\#7](https://github.com/antidot-framework/react-framework/pull/7) ([kpicaza](https://github.com/kpicaza))
+
 **Merged pull requests:**
 
 - add version badge [\#6](https://github.com/antidot-framework/react-framework/pull/6) ([kpicaza](https://github.com/kpicaza))
@@ -74,10 +90,6 @@
 **Implemented enhancements:**
 
 - add missing pieces to run antidot with react php [\#4](https://github.com/antidot-framework/react-framework/pull/4) ([kpicaza](https://github.com/kpicaza))
-
-**Fixed bugs:**
-
-- fix config provider name in composer [\#7](https://github.com/antidot-framework/react-framework/pull/7) ([kpicaza](https://github.com/kpicaza))
 
 **Merged pull requests:**
 
